@@ -1,0 +1,3484 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "The Crafters Workshop API",
+    "version": "1.0.0",
+    "description": "Base path /api/v1. Success: {success:true,message,data,meta?}. Error: {success:false,message,code,details?}. Admin auth: HttpOnly cookie \"cw_admin\"; state-changing admin requests must send header X-CSRF-Token (returned by login and /auth/admin/me)."
+  },
+  "servers": [
+    {
+      "url": "http://localhost:5000/api/v1",
+      "description": "Development"
+    }
+  ],
+  "tags": [
+    {
+      "name": "System"
+    },
+    {
+      "name": "Auth"
+    },
+    {
+      "name": "Products"
+    },
+    {
+      "name": "Categories"
+    },
+    {
+      "name": "Pricing"
+    },
+    {
+      "name": "Orders"
+    },
+    {
+      "name": "Coupons"
+    },
+    {
+      "name": "Offers"
+    },
+    {
+      "name": "Banners"
+    },
+    {
+      "name": "Reviews"
+    },
+    {
+      "name": "Settings"
+    },
+    {
+      "name": "Admin"
+    },
+    {
+      "name": "Admin Products"
+    },
+    {
+      "name": "Admin Categories"
+    },
+    {
+      "name": "Admin Orders"
+    },
+    {
+      "name": "Admin Customers"
+    },
+    {
+      "name": "Admin Coupons"
+    },
+    {
+      "name": "Admin Offers"
+    },
+    {
+      "name": "Admin Banners"
+    },
+    {
+      "name": "Admin Reviews"
+    },
+    {
+      "name": "Admin Inventory"
+    },
+    {
+      "name": "Admin Settings"
+    },
+    {
+      "name": "Uploads"
+    }
+  ],
+  "paths": {
+    "/health": {
+      "get": {
+        "tags": [
+          "System"
+        ],
+        "summary": "Service health and API version",
+        "description": "Authorization: None",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Success envelope"
+          },
+          "400": {
+            "$ref": "#/components/responses/Error"
+          }
+        }
+      }
+    },
+    "/auth/admin/login": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Admin sign-in (sets HttpOnly cookie, returns CSRF token)",
+        "description": "Authorization: None",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Success envelope"
+          },
+          "400": {
+            "$ref": "#/components/responses/Error"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Login"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/admin/logout": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Clear admin session cookie",
+        "description": "Authorization: None",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Success envelope"
+          },
+          "400": {
+            "$ref": "#/components/responses/Error"
+          }
+        }
+      }
+    },
+    "/auth/admin/me": {
+      "get": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Current admin and CSRF token",
+        "description": "Authorization: Admin session cookie",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Success envelope"
+          },
+          "400": {
+            "$ref": "#/components/responses/Error"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error"
+          }
+        },
+        "security": [
+          {
+            "adminCookie": []
+          }
+        ]
+      }
+    },
+    "/auth/admin/change-password": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Change own password",
+        "description": "Authorization: Admin session cookie",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Success envelope"
+          },
+          "400": {
+            "$ref": "#/components/responses/Error"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error"
+          }
+        },
+        "security": [
+          {
+            "adminCookie": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChangePassword"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/products": {
+      "get": {
+        "tags": [
+          "Products"
+        ],
+        "summary": "List active products (page, limit, sort, category, q, minPrice, maxPrice, inStock, ids)",
+        "description": "Authorization: None",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Success envelope"
+          },
+          "400": {
+            "$ref": "#/components/responses/Error"
+          }
+        }
+      }
+    },
+    "/products/featured": {
+      "get": {
+        "tags": [
+          "Products"
+        ],
+        "summary": "Featured products",
+        "description": "Authorization: None",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Success envelope"
+          },
+          "400": {
+            "$ref": "#/components/responses/Error"
+          }
+        }
+      }
+    },
+    "/products/bestsellers": {
+      "get": {
+        "tags": [
+          "Products"
+        ],
+        "summary": "Bestselling products",
+        "description": "Authorization: None",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Success envelope"
+          },
+          "400": {
+            "$ref": "#/components/responses/Error"
+          }
+        }
+      }
+    },
+    "/products/new-arrivals": {
+      "get": {
+        "tags": [
+          "Products"
+        ],
+        "summary": "New arrivals",
+        "description": "Authorization: None",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Success envelope"
+          },
+          "400": {
+            "$ref": "#/components/responses/Error"
+          }
+        }
+      }
+    },
+    "/products/search": {
+      "get": {
+        "tags": [
+          "Products"
+        ],
+        "summary": "Search products (q ≥ 2 chars)",
+        "description": "Authorization: None",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Success envelope"
+          },
+          "400": {
+            "$ref": "#/components/responses/Error"
+          }
+        }
+      }
+    },
+    "/products/slug/{slug}": {
+      "get": {
+        "tags": [
+          "Products"
+        ],
+        "summary": "Product by slug",
+        "description": "Authorization: None",
+        "parameters": [
+          {
+            "name": "slug",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success envelope"
+          },
+          "400": {
+            "$ref": "#/components/responses/Error"
+          }
+        }
+      }
+    },
+    "/products/{id}/related": {
+      "get": {
+        "tags": [
+          "Products"
+        ],
+        "summary": "Related products",
+        "description": "Authorization: None",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success envelope"
+          },
+          "400": {
+            "$ref": "#/components/responses/Error"
+          }
+        }
+      }
+    },
+    "/products/{id}": {
+      "get": {
+        "tags": [
+          "Products"
+        ],
+        "summary": "Product by id",
+        "description": "Authorization: None",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success envelope"
+          },
+          "400": {
+            "$ref": "#/components/responses/Error"
+          }
+        }
+      }
+    },
+    "/categories": {
+      "get": {
+        "tags": [
+          "Categories"
+        ],
+        "summary": "Nested tree of active categories",
+        "description": "Authorization: None",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Success envelope"
+          },
+          "400": {
+            "$ref": "#/components/responses/Error"
+          }
+        }
+      }
+    },
+    "/categories/{slug}/products": {
+      "get": {
+        "tags": [
+          "Categories"
+        ],
+        "summary": "Products in a category (includes sub-levels)",
+        "description": "Authorization: None",
+        "parameters": [
+          {
+            "name": "slug",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success envelope"
+          },
+          "400": {
+            "$ref": "#/components/responses/Error"
+          }
+        }
+      }
+    },
+    "/categories/{id}": {
+      "get": {
+        "tags": [
+          "Categories"
+        ],
+        "summary": "Category by id or slug, with children and breadcrumb",
+        "description": "Authorization: None",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success envelope"
+          },
+          "400": {
+            "$ref": "#/components/responses/Error"
+          }
+        }
+      }
+    },
+    "/cart/validate": {
+      "post": {
+        "tags": [
+          "Pricing"
+        ],
+        "summary": "Validate cart lines, stock and customisation",
+        "description": "Authorization: None",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Success envelope"
+          },
+          "400": {
+            "$ref": "#/components/responses/Error"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Quote"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/pricing/quote": {
+      "post": {
+        "tags": [
+          "Pricing"
+        ],
+        "summary": "Server-calculated price breakdown",
+        "description": "Authorization: None",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Success envelope"
+          },
+          "400": {
+            "$ref": "#/components/responses/Error"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Quote"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/orders": {
+      "post": {
+        "tags": [
+          "Orders"
+        ],
+        "summary": "Create order (header Idempotency-Key recommended)",
+        "description": "Authorization: None",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Success envelope"
+          },
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "$ref": "#/components/responses/Error"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateOrder"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/orders/{orderId}/track": {
+      "get": {
+        "tags": [
+          "Orders"
+        ],
+        "summary": "Track an order (query: phone required)",
+        "description": "Authorization: None",
+        "parameters": [
+          {
+            "name": "orderId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success envelope"
+          },
+          "400": {
+            "$ref": "#/components/responses/Error"
+          }
+        }
+      }
+    },
+    "/coupons/validate": {
+      "post": {
+        "tags": [
+          "Coupons"
+        ],
+        "summary": "Validate a coupon against a cart",
+        "description": "Authorization: None",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Success envelope"
+          },
+          "400": {
+            "$ref": "#/components/responses/Error"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CouponValidate"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/offers": {
+      "get": {
+        "tags": [
+          "Offers"
+        ],
+        "summary": "Currently running offers",
+        "description": "Authorization: None",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Success envelope"
+          },
+          "400": {
+            "$ref": "#/components/responses/Error"
+          }
+        }
+      }
+    },
+    "/banners": {
+      "get": {
+        "tags": [
+          "Banners"
+        ],
+        "summary": "Currently scheduled banners",
+        "description": "Authorization: None",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Success envelope"
+          },
+          "400": {
+            "$ref": "#/components/responses/Error"
+          }
+        }
+      }
+    },
+    "/reviews": {
+      "get": {
+        "tags": [
+          "Reviews"
+        ],
+        "summary": "Approved reviews (optional product filter)",
+        "description": "Authorization: None",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Success envelope"
+          },
+          "400": {
+            "$ref": "#/components/responses/Error"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Reviews"
+        ],
+        "summary": "Submit a review for a delivered order (pending moderation)",
+        "description": "Authorization: None",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Success envelope"
+          },
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "$ref": "#/components/responses/Error"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Review"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/settings/public": {
+      "get": {
+        "tags": [
+          "Settings"
+        ],
+        "summary": "Public site settings",
+        "description": "Authorization: None",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Success envelope"
+          },
+          "400": {
+            "$ref": "#/components/responses/Error"
+          }
+        }
+      }
+    },
+    "/admin/dashboard": {
+      "get": {
+        "tags": [
+          "Admin"
+        ],
+        "summary": "Dashboard statistics",
+        "description": "Authorization: Admin session (staff, manager or super_admin) + X-CSRF-Token on writes",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Success envelope"
+          },
+          "400": {
+            "$ref": "#/components/responses/Error"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error"
+          }
+        },
+        "security": [
+          {
+            "adminCookie": []
+          }
+        ]
+      }
+    },
+    "/admin/products": {
+      "get": {
+        "tags": [
+          "Admin Products"
+        ],
+        "summary": "List all products with filters",
+        "description": "Authorization: Admin session (manager or super_admin) + X-CSRF-Token on writes",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Success envelope"
+          },
+          "400": {
+            "$ref": "#/components/responses/Error"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error"
+          }
+        },
+        "security": [
+          {
+            "adminCookie": []
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "Admin Products"
+        ],
+        "summary": "Create product",
+        "description": "Authorization: Admin session (manager or super_admin) + X-CSRF-Token on writes",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Success envelope"
+          },
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "$ref": "#/components/responses/Error"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error"
+          }
+        },
+        "security": [
+          {
+            "adminCookie": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Product"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/products/{id}": {
+      "get": {
+        "tags": [
+          "Admin Products"
+        ],
+        "summary": "Get product",
+        "description": "Authorization: Admin session (manager or super_admin) + X-CSRF-Token on writes",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success envelope"
+          },
+          "400": {
+            "$ref": "#/components/responses/Error"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error"
+          }
+        },
+        "security": [
+          {
+            "adminCookie": []
+          }
+        ]
+      },
+      "patch": {
+        "tags": [
+          "Admin Products"
+        ],
+        "summary": "Update product",
+        "description": "Authorization: Admin session (manager or super_admin) + X-CSRF-Token on writes",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success envelope"
+          },
+          "400": {
+            "$ref": "#/components/responses/Error"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error"
+          }
+        },
+        "security": [
+          {
+            "adminCookie": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Product"
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Admin Products"
+        ],
+        "summary": "Archive product (?permanent=true: super admin, unordered only)",
+        "description": "Authorization: Admin session (manager or super_admin) + X-CSRF-Token on writes",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success envelope"
+          },
+          "400": {
+            "$ref": "#/components/responses/Error"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error"
+          }
+        },
+        "security": [
+          {
+            "adminCookie": []
+          }
+        ]
+      }
+    },
+    "/admin/products/{id}/status": {
+      "patch": {
+        "tags": [
+          "Admin Products"
+        ],
+        "summary": "Activate / deactivate",
+        "description": "Authorization: Admin session (manager or super_admin) + X-CSRF-Token on writes",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success envelope"
+          },
+          "400": {
+            "$ref": "#/components/responses/Error"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error"
+          }
+        },
+        "security": [
+          {
+            "adminCookie": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProductStatus"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/products/{id}/stock": {
+      "patch": {
+        "tags": [
+          "Admin Products"
+        ],
+        "summary": "Adjust stock with reason",
+        "description": "Authorization: Admin session (manager or super_admin) + X-CSRF-Token on writes",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success envelope"
+          },
+          "400": {
+            "$ref": "#/components/responses/Error"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error"
+          }
+        },
+        "security": [
+          {
+            "adminCookie": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StockAdjust"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/categories": {
+      "get": {
+        "tags": [
+          "Admin Categories"
+        ],
+        "summary": "List categories (all levels)",
+        "description": "Authorization: Admin session (manager or super_admin) + X-CSRF-Token on writes",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Success envelope"
+          },
+          "400": {
+            "$ref": "#/components/responses/Error"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error"
+          }
+        },
+        "security": [
+          {
+            "adminCookie": []
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "Admin Categories"
+        ],
+        "summary": "Create category (optionally with parent)",
+        "description": "Authorization: Admin session (manager or super_admin) + X-CSRF-Token on writes",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Success envelope"
+          },
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "$ref": "#/components/responses/Error"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error"
+          }
+        },
+        "security": [
+          {
+            "adminCookie": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Category"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/categories/{id}": {
+      "get": {
+        "tags": [
+          "Admin Categories"
+        ],
+        "summary": "Get category",
+        "description": "Authorization: Admin session (manager or super_admin) + X-CSRF-Token on writes",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success envelope"
+          },
+          "400": {
+            "$ref": "#/components/responses/Error"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error"
+          }
+        },
+        "security": [
+          {
+            "adminCookie": []
+          }
+        ]
+      },
+      "patch": {
+        "tags": [
+          "Admin Categories"
+        ],
+        "summary": "Update category",
+        "description": "Authorization: Admin session (manager or super_admin) + X-CSRF-Token on writes",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success envelope"
+          },
+          "400": {
+            "$ref": "#/components/responses/Error"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error"
+          }
+        },
+        "security": [
+          {
+            "adminCookie": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Category"
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Admin Categories"
+        ],
+        "summary": "Delete; 409 if dependents unless archive=true or reassignTo=id",
+        "description": "Authorization: Admin session (manager or super_admin) + X-CSRF-Token on writes",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success envelope"
+          },
+          "400": {
+            "$ref": "#/components/responses/Error"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error"
+          }
+        },
+        "security": [
+          {
+            "adminCookie": []
+          }
+        ]
+      }
+    },
+    "/admin/subcategories": {
+      "get": {
+        "tags": [
+          "Admin Categories"
+        ],
+        "summary": "List subcategories (level 2)",
+        "description": "Authorization: Admin session (manager or super_admin) + X-CSRF-Token on writes",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Success envelope"
+          },
+          "400": {
+            "$ref": "#/components/responses/Error"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error"
+          }
+        },
+        "security": [
+          {
+            "adminCookie": []
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "Admin Categories"
+        ],
+        "summary": "Create subcategory (parent = category)",
+        "description": "Authorization: Admin session (manager or super_admin) + X-CSRF-Token on writes",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Success envelope"
+          },
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "$ref": "#/components/responses/Error"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error"
+          }
+        },
+        "security": [
+          {
+            "adminCookie": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Category"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/subcategories/{id}": {
+      "get": {
+        "tags": [
+          "Admin Categories"
+        ],
+        "summary": "Get subcategory",
+        "description": "Authorization: Admin session (manager or super_admin) + X-CSRF-Token on writes",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success envelope"
+          },
+          "400": {
+            "$ref": "#/components/responses/Error"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error"
+          }
+        },
+        "security": [
+          {
+            "adminCookie": []
+          }
+        ]
+      },
+      "patch": {
+        "tags": [
+          "Admin Categories"
+        ],
+        "summary": "Update subcategory",
+        "description": "Authorization: Admin session (manager or super_admin) + X-CSRF-Token on writes",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success envelope"
+          },
+          "400": {
+            "$ref": "#/components/responses/Error"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error"
+          }
+        },
+        "security": [
+          {
+            "adminCookie": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Category"
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Admin Categories"
+        ],
+        "summary": "Delete subcategory (same safeguards)",
+        "description": "Authorization: Admin session (manager or super_admin) + X-CSRF-Token on writes",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success envelope"
+          },
+          "400": {
+            "$ref": "#/components/responses/Error"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error"
+          }
+        },
+        "security": [
+          {
+            "adminCookie": []
+          }
+        ]
+      }
+    },
+    "/admin/child-categories": {
+      "get": {
+        "tags": [
+          "Admin Categories"
+        ],
+        "summary": "List child categories (level 3)",
+        "description": "Authorization: Admin session (manager or super_admin) + X-CSRF-Token on writes",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Success envelope"
+          },
+          "400": {
+            "$ref": "#/components/responses/Error"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error"
+          }
+        },
+        "security": [
+          {
+            "adminCookie": []
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "Admin Categories"
+        ],
+        "summary": "Create child category (parent = subcategory)",
+        "description": "Authorization: Admin session (manager or super_admin) + X-CSRF-Token on writes",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Success envelope"
+          },
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "$ref": "#/components/responses/Error"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error"
+          }
+        },
+        "security": [
+          {
+            "adminCookie": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Category"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/child-categories/{id}": {
+      "get": {
+        "tags": [
+          "Admin Categories"
+        ],
+        "summary": "Get child category",
+        "description": "Authorization: Admin session (manager or super_admin) + X-CSRF-Token on writes",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success envelope"
+          },
+          "400": {
+            "$ref": "#/components/responses/Error"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error"
+          }
+        },
+        "security": [
+          {
+            "adminCookie": []
+          }
+        ]
+      },
+      "patch": {
+        "tags": [
+          "Admin Categories"
+        ],
+        "summary": "Update child category",
+        "description": "Authorization: Admin session (manager or super_admin) + X-CSRF-Token on writes",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success envelope"
+          },
+          "400": {
+            "$ref": "#/components/responses/Error"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error"
+          }
+        },
+        "security": [
+          {
+            "adminCookie": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Category"
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Admin Categories"
+        ],
+        "summary": "Delete child category (same safeguards)",
+        "description": "Authorization: Admin session (manager or super_admin) + X-CSRF-Token on writes",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success envelope"
+          },
+          "400": {
+            "$ref": "#/components/responses/Error"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error"
+          }
+        },
+        "security": [
+          {
+            "adminCookie": []
+          }
+        ]
+      }
+    },
+    "/admin/orders": {
+      "get": {
+        "tags": [
+          "Admin Orders"
+        ],
+        "summary": "List orders (q, status, paymentStatus, from, to, page, limit)",
+        "description": "Authorization: Admin session (staff, manager or super_admin) + X-CSRF-Token on writes",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Success envelope"
+          },
+          "400": {
+            "$ref": "#/components/responses/Error"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error"
+          }
+        },
+        "security": [
+          {
+            "adminCookie": []
+          }
+        ]
+      }
+    },
+    "/admin/orders/export": {
+      "post": {
+        "tags": [
+          "Admin Orders"
+        ],
+        "summary": "Export filtered orders as CSV",
+        "description": "Authorization: Admin session (staff, manager or super_admin) + X-CSRF-Token on writes",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Success envelope"
+          },
+          "400": {
+            "$ref": "#/components/responses/Error"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error"
+          }
+        },
+        "security": [
+          {
+            "adminCookie": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OrderFilters"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/orders/{id}": {
+      "get": {
+        "tags": [
+          "Admin Orders"
+        ],
+        "summary": "Order details (by UUID or order ID)",
+        "description": "Authorization: Admin session (staff, manager or super_admin) + X-CSRF-Token on writes",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success envelope"
+          },
+          "400": {
+            "$ref": "#/components/responses/Error"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error"
+          }
+        },
+        "security": [
+          {
+            "adminCookie": []
+          }
+        ]
+      }
+    },
+    "/admin/orders/{id}/status": {
+      "patch": {
+        "tags": [
+          "Admin Orders"
+        ],
+        "summary": "Change status (validated transitions)",
+        "description": "Authorization: Admin session (staff, manager or super_admin) + X-CSRF-Token on writes",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success envelope"
+          },
+          "400": {
+            "$ref": "#/components/responses/Error"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error"
+          }
+        },
+        "security": [
+          {
+            "adminCookie": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OrderStatus"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/orders/{id}/notes": {
+      "patch": {
+        "tags": [
+          "Admin Orders"
+        ],
+        "summary": "Add internal note",
+        "description": "Authorization: Admin session (staff, manager or super_admin) + X-CSRF-Token on writes",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success envelope"
+          },
+          "400": {
+            "$ref": "#/components/responses/Error"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error"
+          }
+        },
+        "security": [
+          {
+            "adminCookie": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OrderNote"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/orders/{id}/payment": {
+      "patch": {
+        "tags": [
+          "Admin Orders"
+        ],
+        "summary": "Record payment collected",
+        "description": "Authorization: Admin session (staff, manager or super_admin) + X-CSRF-Token on writes",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success envelope"
+          },
+          "400": {
+            "$ref": "#/components/responses/Error"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error"
+          }
+        },
+        "security": [
+          {
+            "adminCookie": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OrderPayment"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/orders/{id}/cancel": {
+      "post": {
+        "tags": [
+          "Admin Orders"
+        ],
+        "summary": "Cancel order and restore stock",
+        "description": "Authorization: Admin session (staff, manager or super_admin) + X-CSRF-Token on writes",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success envelope"
+          },
+          "400": {
+            "$ref": "#/components/responses/Error"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error"
+          }
+        },
+        "security": [
+          {
+            "adminCookie": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OrderCancel"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/customers": {
+      "get": {
+        "tags": [
+          "Admin Customers"
+        ],
+        "summary": "List / search customers",
+        "description": "Authorization: Admin session (staff, manager or super_admin) + X-CSRF-Token on writes",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Success envelope"
+          },
+          "400": {
+            "$ref": "#/components/responses/Error"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error"
+          }
+        },
+        "security": [
+          {
+            "adminCookie": []
+          }
+        ]
+      }
+    },
+    "/admin/customers/{id}": {
+      "get": {
+        "tags": [
+          "Admin Customers"
+        ],
+        "summary": "Customer with order history",
+        "description": "Authorization: Admin session (staff, manager or super_admin) + X-CSRF-Token on writes",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success envelope"
+          },
+          "400": {
+            "$ref": "#/components/responses/Error"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error"
+          }
+        },
+        "security": [
+          {
+            "adminCookie": []
+          }
+        ]
+      }
+    },
+    "/admin/coupons": {
+      "get": {
+        "tags": [
+          "Admin Coupons"
+        ],
+        "summary": "List coupons",
+        "description": "Authorization: Admin session (manager or super_admin) + X-CSRF-Token on writes",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Success envelope"
+          },
+          "400": {
+            "$ref": "#/components/responses/Error"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error"
+          }
+        },
+        "security": [
+          {
+            "adminCookie": []
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "Admin Coupons"
+        ],
+        "summary": "Create coupon",
+        "description": "Authorization: Admin session (manager or super_admin) + X-CSRF-Token on writes",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Success envelope"
+          },
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "$ref": "#/components/responses/Error"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error"
+          }
+        },
+        "security": [
+          {
+            "adminCookie": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Coupon"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/coupons/{id}": {
+      "get": {
+        "tags": [
+          "Admin Coupons"
+        ],
+        "summary": "Get coupon",
+        "description": "Authorization: Admin session (manager or super_admin) + X-CSRF-Token on writes",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success envelope"
+          },
+          "400": {
+            "$ref": "#/components/responses/Error"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error"
+          }
+        },
+        "security": [
+          {
+            "adminCookie": []
+          }
+        ]
+      },
+      "patch": {
+        "tags": [
+          "Admin Coupons"
+        ],
+        "summary": "Update coupon",
+        "description": "Authorization: Admin session (manager or super_admin) + X-CSRF-Token on writes",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success envelope"
+          },
+          "400": {
+            "$ref": "#/components/responses/Error"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error"
+          }
+        },
+        "security": [
+          {
+            "adminCookie": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Coupon"
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Admin Coupons"
+        ],
+        "summary": "Delete coupon",
+        "description": "Authorization: Admin session (manager or super_admin) + X-CSRF-Token on writes",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success envelope"
+          },
+          "400": {
+            "$ref": "#/components/responses/Error"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error"
+          }
+        },
+        "security": [
+          {
+            "adminCookie": []
+          }
+        ]
+      }
+    },
+    "/admin/offers": {
+      "get": {
+        "tags": [
+          "Admin Offers"
+        ],
+        "summary": "List offers",
+        "description": "Authorization: Admin session (manager or super_admin) + X-CSRF-Token on writes",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Success envelope"
+          },
+          "400": {
+            "$ref": "#/components/responses/Error"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error"
+          }
+        },
+        "security": [
+          {
+            "adminCookie": []
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "Admin Offers"
+        ],
+        "summary": "Create offer",
+        "description": "Authorization: Admin session (manager or super_admin) + X-CSRF-Token on writes",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Success envelope"
+          },
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "$ref": "#/components/responses/Error"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error"
+          }
+        },
+        "security": [
+          {
+            "adminCookie": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Offer"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/offers/{id}": {
+      "get": {
+        "tags": [
+          "Admin Offers"
+        ],
+        "summary": "Get offer",
+        "description": "Authorization: Admin session (manager or super_admin) + X-CSRF-Token on writes",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success envelope"
+          },
+          "400": {
+            "$ref": "#/components/responses/Error"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error"
+          }
+        },
+        "security": [
+          {
+            "adminCookie": []
+          }
+        ]
+      },
+      "patch": {
+        "tags": [
+          "Admin Offers"
+        ],
+        "summary": "Update offer",
+        "description": "Authorization: Admin session (manager or super_admin) + X-CSRF-Token on writes",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success envelope"
+          },
+          "400": {
+            "$ref": "#/components/responses/Error"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error"
+          }
+        },
+        "security": [
+          {
+            "adminCookie": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Offer"
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Admin Offers"
+        ],
+        "summary": "Delete offer",
+        "description": "Authorization: Admin session (manager or super_admin) + X-CSRF-Token on writes",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success envelope"
+          },
+          "400": {
+            "$ref": "#/components/responses/Error"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error"
+          }
+        },
+        "security": [
+          {
+            "adminCookie": []
+          }
+        ]
+      }
+    },
+    "/admin/banners": {
+      "get": {
+        "tags": [
+          "Admin Banners"
+        ],
+        "summary": "List banners",
+        "description": "Authorization: Admin session (manager or super_admin) + X-CSRF-Token on writes",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Success envelope"
+          },
+          "400": {
+            "$ref": "#/components/responses/Error"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error"
+          }
+        },
+        "security": [
+          {
+            "adminCookie": []
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "Admin Banners"
+        ],
+        "summary": "Create banner",
+        "description": "Authorization: Admin session (manager or super_admin) + X-CSRF-Token on writes",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Success envelope"
+          },
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "$ref": "#/components/responses/Error"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error"
+          }
+        },
+        "security": [
+          {
+            "adminCookie": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Banner"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/banners/{id}": {
+      "get": {
+        "tags": [
+          "Admin Banners"
+        ],
+        "summary": "Get banner",
+        "description": "Authorization: Admin session (manager or super_admin) + X-CSRF-Token on writes",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success envelope"
+          },
+          "400": {
+            "$ref": "#/components/responses/Error"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error"
+          }
+        },
+        "security": [
+          {
+            "adminCookie": []
+          }
+        ]
+      },
+      "patch": {
+        "tags": [
+          "Admin Banners"
+        ],
+        "summary": "Update banner",
+        "description": "Authorization: Admin session (manager or super_admin) + X-CSRF-Token on writes",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success envelope"
+          },
+          "400": {
+            "$ref": "#/components/responses/Error"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error"
+          }
+        },
+        "security": [
+          {
+            "adminCookie": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Banner"
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Admin Banners"
+        ],
+        "summary": "Delete banner",
+        "description": "Authorization: Admin session (manager or super_admin) + X-CSRF-Token on writes",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success envelope"
+          },
+          "400": {
+            "$ref": "#/components/responses/Error"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error"
+          }
+        },
+        "security": [
+          {
+            "adminCookie": []
+          }
+        ]
+      }
+    },
+    "/admin/reviews": {
+      "get": {
+        "tags": [
+          "Admin Reviews"
+        ],
+        "summary": "List reviews (status filter)",
+        "description": "Authorization: Admin session (manager or super_admin) + X-CSRF-Token on writes",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Success envelope"
+          },
+          "400": {
+            "$ref": "#/components/responses/Error"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error"
+          }
+        },
+        "security": [
+          {
+            "adminCookie": []
+          }
+        ]
+      }
+    },
+    "/admin/reviews/{id}": {
+      "patch": {
+        "tags": [
+          "Admin Reviews"
+        ],
+        "summary": "Approve / reject",
+        "description": "Authorization: Admin session (manager or super_admin) + X-CSRF-Token on writes",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success envelope"
+          },
+          "400": {
+            "$ref": "#/components/responses/Error"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error"
+          }
+        },
+        "security": [
+          {
+            "adminCookie": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReviewModerate"
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Admin Reviews"
+        ],
+        "summary": "Delete review",
+        "description": "Authorization: Admin session (manager or super_admin) + X-CSRF-Token on writes",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success envelope"
+          },
+          "400": {
+            "$ref": "#/components/responses/Error"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error"
+          }
+        },
+        "security": [
+          {
+            "adminCookie": []
+          }
+        ]
+      }
+    },
+    "/admin/inventory": {
+      "get": {
+        "tags": [
+          "Admin Inventory"
+        ],
+        "summary": "Stock rows (level=low|out)",
+        "description": "Authorization: Admin session (staff, manager or super_admin) + X-CSRF-Token on writes",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Success envelope"
+          },
+          "400": {
+            "$ref": "#/components/responses/Error"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error"
+          }
+        },
+        "security": [
+          {
+            "adminCookie": []
+          }
+        ]
+      }
+    },
+    "/admin/inventory/history": {
+      "get": {
+        "tags": [
+          "Admin Inventory"
+        ],
+        "summary": "Stock adjustment history",
+        "description": "Authorization: Admin session (staff, manager or super_admin) + X-CSRF-Token on writes",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Success envelope"
+          },
+          "400": {
+            "$ref": "#/components/responses/Error"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error"
+          }
+        },
+        "security": [
+          {
+            "adminCookie": []
+          }
+        ]
+      }
+    },
+    "/admin/inventory/adjust": {
+      "post": {
+        "tags": [
+          "Admin Inventory"
+        ],
+        "summary": "Adjust stock",
+        "description": "Authorization: Admin session (staff, manager or super_admin) + X-CSRF-Token on writes",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Success envelope"
+          },
+          "400": {
+            "$ref": "#/components/responses/Error"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error"
+          }
+        },
+        "security": [
+          {
+            "adminCookie": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/InventoryAdjust"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/settings": {
+      "get": {
+        "tags": [
+          "Admin Settings"
+        ],
+        "summary": "All settings",
+        "description": "Authorization: Admin session (manager or super_admin) + X-CSRF-Token on writes",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Success envelope"
+          },
+          "400": {
+            "$ref": "#/components/responses/Error"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error"
+          }
+        },
+        "security": [
+          {
+            "adminCookie": []
+          }
+        ]
+      },
+      "patch": {
+        "tags": [
+          "Admin Settings"
+        ],
+        "summary": "Update settings (partial)",
+        "description": "Authorization: Admin session (manager or super_admin) + X-CSRF-Token on writes",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Success envelope"
+          },
+          "400": {
+            "$ref": "#/components/responses/Error"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error"
+          }
+        },
+        "security": [
+          {
+            "adminCookie": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Settings"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/uploads/product-images": {
+      "post": {
+        "tags": [
+          "Uploads"
+        ],
+        "summary": "Upload up to 10 product images (multipart field \"images\")",
+        "description": "Authorization: Admin session (manager or super_admin) + X-CSRF-Token on writes",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Success envelope"
+          },
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "$ref": "#/components/responses/Error"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error"
+          }
+        },
+        "security": [
+          {
+            "adminCookie": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "images": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "format": "binary"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/uploads/category-images": {
+      "post": {
+        "tags": [
+          "Uploads"
+        ],
+        "summary": "Upload a category image",
+        "description": "Authorization: Admin session (manager or super_admin) + X-CSRF-Token on writes",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Success envelope"
+          },
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "$ref": "#/components/responses/Error"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error"
+          }
+        },
+        "security": [
+          {
+            "adminCookie": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "images": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "format": "binary"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/uploads/banner-images": {
+      "post": {
+        "tags": [
+          "Uploads"
+        ],
+        "summary": "Upload banner images",
+        "description": "Authorization: Admin session (manager or super_admin) + X-CSRF-Token on writes",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Success envelope"
+          },
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "$ref": "#/components/responses/Error"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error"
+          }
+        },
+        "security": [
+          {
+            "adminCookie": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "images": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "format": "binary"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/uploads/site-images": {
+      "post": {
+        "tags": [
+          "Uploads"
+        ],
+        "summary": "Upload logo / favicon / hero image",
+        "description": "Authorization: Admin session (manager or super_admin) + X-CSRF-Token on writes",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Success envelope"
+          },
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "$ref": "#/components/responses/Error"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error"
+          }
+        },
+        "security": [
+          {
+            "adminCookie": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "images": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "format": "binary"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "adminCookie": {
+        "type": "apiKey",
+        "in": "cookie",
+        "name": "cw_admin"
+      },
+      "csrf": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "X-CSRF-Token"
+      }
+    },
+    "schemas": {
+      "Login": {
+        "type": "object",
+        "description": "Field → type/rules. * = required",
+        "properties": {
+          "email": {
+            "description": "string(email)*"
+          },
+          "password": {
+            "description": "string*"
+          }
+        }
+      },
+      "ChangePassword": {
+        "type": "object",
+        "description": "Field → type/rules. * = required",
+        "properties": {
+          "currentPassword": {
+            "description": "string*"
+          },
+          "newPassword": {
+            "description": "string(min 12, upper+lower+digit)*"
+          }
+        }
+      },
+      "Quote": {
+        "type": "object",
+        "description": "Field → type/rules. * = required",
+        "properties": {
+          "items": {
+            "description": "[{productId*, variantId, quantity 1-20*, customizations{key:value}}]*"
+          },
+          "couponCode": {
+            "description": "string"
+          },
+          "phone": {
+            "description": "string"
+          }
+        }
+      },
+      "CreateOrder": {
+        "type": "object",
+        "description": "Field → type/rules. * = required",
+        "properties": {
+          "customer": {
+            "description": "{name*, phone* (10-digit Indian mobile), whatsapp, email}"
+          },
+          "address": {
+            "description": "{line1*, line2, city*, state*, pincode* (6 digits), landmark}"
+          },
+          "items": {
+            "description": "as Quote*"
+          },
+          "couponCode": {
+            "description": "string"
+          },
+          "customerNotes": {
+            "description": "string"
+          },
+          "giftMessage": {
+            "description": "string"
+          },
+          "expectedTotal": {
+            "description": "number (409 PRICE_CHANGED if differs from server total)"
+          }
+        }
+      },
+      "CouponValidate": {
+        "type": "object",
+        "description": "Field → type/rules. * = required",
+        "properties": {
+          "code": {
+            "description": "string*"
+          },
+          "items": {
+            "description": "as Quote*"
+          },
+          "phone": {
+            "description": "string"
+          }
+        }
+      },
+      "Review": {
+        "type": "object",
+        "description": "Field → type/rules. * = required",
+        "properties": {
+          "orderId": {
+            "description": "string*"
+          },
+          "phone": {
+            "description": "string*"
+          },
+          "productId": {
+            "description": "id*"
+          },
+          "rating": {
+            "description": "1-5*"
+          },
+          "title": {
+            "description": "string"
+          },
+          "text": {
+            "description": "string*"
+          }
+        }
+      },
+      "Product": {
+        "type": "object",
+        "description": "Field → type/rules. * = required",
+        "properties": {
+          "name": {
+            "description": "*"
+          },
+          "sku": {
+            "description": "*"
+          },
+          "slug": {
+            "description": ""
+          },
+          "category": {
+            "description": "id*"
+          },
+          "subcategory": {
+            "description": "id|null"
+          },
+          "childCategory": {
+            "description": "id|null"
+          },
+          "price": {
+            "description": "number*"
+          },
+          "discountPrice": {
+            "description": "number|null (< price)"
+          },
+          "stock": {
+            "description": "int"
+          },
+          "lowStockThreshold": {
+            "description": "int"
+          },
+          "trackInventory": {
+            "description": "bool"
+          },
+          "variants": {
+            "description": "[{label*, sku, price, discountPrice, stock}]"
+          },
+          "customFields": {
+            "description": "[{key*, label*, type text|textarea|select|photo|message, required, options, maxLength}]"
+          },
+          "images": {
+            "description": "[{url*, publicId, alt}]"
+          },
+          "isFeatured": {
+            "description": "bool"
+          },
+          "isBestseller": {
+            "description": "bool"
+          },
+          "isNewArrival": {
+            "description": "bool"
+          },
+          "keywords": {
+            "description": "[string]"
+          },
+          "seoTitle": {
+            "description": ""
+          },
+          "seoDescription": {
+            "description": ""
+          },
+          "isActive": {
+            "description": "bool"
+          }
+        }
+      },
+      "ProductStatus": {
+        "type": "object",
+        "description": "Field → type/rules. * = required",
+        "properties": {
+          "isActive": {
+            "description": "bool*"
+          }
+        }
+      },
+      "StockAdjust": {
+        "type": "object",
+        "description": "Field → type/rules. * = required",
+        "properties": {
+          "variantId": {
+            "description": "id"
+          },
+          "delta": {
+            "description": "int"
+          },
+          "stock": {
+            "description": "int (exactly one of delta/stock)"
+          },
+          "reason": {
+            "description": "string*"
+          }
+        }
+      },
+      "Category": {
+        "type": "object",
+        "description": "Field → type/rules. * = required",
+        "properties": {
+          "name": {
+            "description": "*"
+          },
+          "slug": {
+            "description": ""
+          },
+          "description": {
+            "description": ""
+          },
+          "parent": {
+            "description": "id|null"
+          },
+          "image": {
+            "description": "{url, publicId, alt}"
+          },
+          "displayOrder": {
+            "description": "int"
+          },
+          "isActive": {
+            "description": "bool"
+          }
+        }
+      },
+      "OrderFilters": {
+        "type": "object",
+        "description": "Field → type/rules. * = required",
+        "properties": {
+          "q": {
+            "description": ""
+          },
+          "status": {
+            "description": ""
+          },
+          "paymentStatus": {
+            "description": ""
+          },
+          "from": {
+            "description": "date"
+          },
+          "to": {
+            "description": "date"
+          }
+        }
+      },
+      "OrderStatus": {
+        "type": "object",
+        "description": "Field → type/rules. * = required",
+        "properties": {
+          "status": {
+            "description": "enum*"
+          },
+          "note": {
+            "description": ""
+          }
+        }
+      },
+      "OrderNote": {
+        "type": "object",
+        "description": "Field → type/rules. * = required",
+        "properties": {
+          "note": {
+            "description": "string*"
+          }
+        }
+      },
+      "OrderPayment": {
+        "type": "object",
+        "description": "Field → type/rules. * = required",
+        "properties": {
+          "paymentStatus": {
+            "description": "unpaid|partially_paid|paid*"
+          },
+          "amountCollected": {
+            "description": "number*"
+          }
+        }
+      },
+      "OrderCancel": {
+        "type": "object",
+        "description": "Field → type/rules. * = required",
+        "properties": {
+          "reason": {
+            "description": "string*"
+          }
+        }
+      },
+      "Coupon": {
+        "type": "object",
+        "description": "Field → type/rules. * = required",
+        "properties": {
+          "code": {
+            "description": "*"
+          },
+          "type": {
+            "description": "percentage|fixed*"
+          },
+          "value": {
+            "description": "number*"
+          },
+          "minCartAmount": {
+            "description": ""
+          },
+          "maxDiscount": {
+            "description": ""
+          },
+          "startsAt": {
+            "description": ""
+          },
+          "expiresAt": {
+            "description": ""
+          },
+          "usageLimit": {
+            "description": ""
+          },
+          "perCustomerLimit": {
+            "description": ""
+          },
+          "products": {
+            "description": "[id]"
+          },
+          "categories": {
+            "description": "[id]"
+          },
+          "isActive": {
+            "description": ""
+          }
+        }
+      },
+      "Offer": {
+        "type": "object",
+        "description": "Field → type/rules. * = required",
+        "properties": {
+          "title": {
+            "description": "*"
+          },
+          "description": {
+            "description": ""
+          },
+          "image": {
+            "description": ""
+          },
+          "startsAt": {
+            "description": ""
+          },
+          "endsAt": {
+            "description": ""
+          },
+          "isActive": {
+            "description": ""
+          },
+          "couponCode": {
+            "description": ""
+          },
+          "products": {
+            "description": "[id]"
+          },
+          "categories": {
+            "description": "[id]"
+          }
+        }
+      },
+      "Banner": {
+        "type": "object",
+        "description": "Field → type/rules. * = required",
+        "properties": {
+          "title": {
+            "description": "*"
+          },
+          "description": {
+            "description": ""
+          },
+          "image": {
+            "description": "{url*, alt}"
+          },
+          "ctaLabel": {
+            "description": ""
+          },
+          "linkUrl": {
+            "description": ""
+          },
+          "product": {
+            "description": "id"
+          },
+          "category": {
+            "description": "id"
+          },
+          "displayOrder": {
+            "description": ""
+          },
+          "startsAt": {
+            "description": ""
+          },
+          "endsAt": {
+            "description": ""
+          },
+          "isActive": {
+            "description": ""
+          }
+        }
+      },
+      "ReviewModerate": {
+        "type": "object",
+        "description": "Field → type/rules. * = required",
+        "properties": {
+          "status": {
+            "description": "pending|approved|rejected*"
+          }
+        }
+      },
+      "InventoryAdjust": {
+        "type": "object",
+        "description": "Field → type/rules. * = required",
+        "properties": {
+          "productId": {
+            "description": "id*"
+          },
+          "variantId": {
+            "description": "id"
+          },
+          "delta": {
+            "description": "int"
+          },
+          "stock": {
+            "description": "int"
+          },
+          "reason": {
+            "description": "string*"
+          }
+        }
+      },
+      "Settings": {
+        "type": "object",
+        "description": "Field → type/rules. * = required",
+        "properties": {
+          "(any subset of)": {
+            "description": "brandName, tagline, logoUrl, faviconUrl, contactEmail, businessPhone, whatsappNumber (digits), address, social{}, hero{}, announcement{}, footerText, shipping{flatRate, freeShippingThreshold, note}, coupons{enabled}, display{}, seo{}, maintenance{}"
+          }
+        }
+      }
+    },
+    "responses": {
+      "Error": {
+        "description": "Error envelope",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean",
+                  "example": false
+                },
+                "message": {
+                  "type": "string"
+                },
+                "code": {
+                  "type": "string",
+                  "example": "VALIDATION_ERROR"
+                },
+                "details": {}
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

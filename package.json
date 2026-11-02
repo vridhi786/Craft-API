@@ -1,0 +1,45 @@
+{
+  "name": "crafters-workshop-api",
+  "version": "1.0.0",
+  "description": "REST API for The Crafters Workshop e-commerce site (Express + Supabase/PostgreSQL)",
+  "private": true,
+  "type": "module",
+  "main": "server.js",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "test": "npm run test:unit && npm run test:integration",
+    "test:unit": "node --experimental-test-module-mocks --test \"tests/unit/**/*.test.js\"",
+    "check": "node scripts/syntax-check.js && node scripts/check-imports.js",
+    "create-admin": "node scripts/create-admin.js",
+    "seed-settings": "node scripts/seed-settings.js",
+    "sitemap": "node scripts/generate-sitemap.js",
+    "openapi": "node scripts/generate-openapi.js",
+    "audit": "npm audit --omit=dev",
+    "test:integration": "vitest run",
+    "db:schema": "node scripts/print-schema-path.js"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.48.1",
+    "bcryptjs": "^2.4.3",
+    "cloudinary": "^2.5.1",
+    "compression": "^1.7.5",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "express-rate-limit": "^7.5.0",
+    "helmet": "^8.0.0",
+    "jsonwebtoken": "^9.0.2",
+    "morgan": "^1.10.0",
+    "multer": "^1.4.5-lts.1",
+    "zod": "^3.24.1"
+  },
+  "devDependencies": {
+    "supertest": "^7.0.0",
+    "vitest": "^2.1.8"
+  }
+}
